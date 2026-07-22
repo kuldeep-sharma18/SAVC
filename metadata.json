@@ -1,0 +1,6 @@
+{
+  "name": "Socially Approved Video Carousel",
+  "description": "Performance-optimized video carousel feature with outer slider, inner slider modal, custom video controls, and interactive backend endpoints.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
