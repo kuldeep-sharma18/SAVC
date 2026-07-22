@@ -134,7 +134,7 @@ async function startServer() {
     }
 
     const newComment = {
-      id: `c-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      id: `c-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
       author: author && author !== "Guest User" && author !== "You" ? author.trim() : "John",
       avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyh9ZR7j2Oi5JHGSIe2mt2cgeVlwQb4mXg3kXIaPgEJQ&s=10",
       text: text.trim(),
@@ -154,7 +154,7 @@ async function startServer() {
   });
 
   // Health check endpoint
-  app.get("/api/health", (req, res) => {
+  app.get("/api/health", (_req, res) => {
     res.json({ status: "ok", videosLoaded: videosStore.length });
   });
 
@@ -163,6 +163,7 @@ async function startServer() {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
+      plugins: [],
     });
     app.use(vite.middlewares);
   } else {

@@ -156,13 +156,12 @@ export default function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto pb-16 flex flex-col items-center justify-center">
+      <main className="flex-1 max-w-7xl w-full h-72 mx-auto pb-16 flex flex-col items-center justify-center">
         
         {/* Loading State */}
         {isLoading && (
           <div className="py-20 text-center flex flex-col items-center justify-center space-y-3">
             <RefreshCw className="w-8 h-8 text-rose-500 animate-spin" />
-            <p className="text-sm font-medium text-slate-400">Loading videos from Node.js backend...</p>
           </div>
         )}
 

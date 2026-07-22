@@ -128,12 +128,12 @@ export const InnerSliderModal = ({
         </button>
 
         {/* 3 Videos Carousel Layout Container */}
-        <div className="w-full max-w-6xl h-full flex items-center justify-center space-x-2 sm:space-x-4 lg:space-x-8 px-2 sm:px-12">
+        <div className="w-full max-w-[1400px] h-full flex items-center justify-center space-x-2 sm:space-x-4 lg:space-x-8 px-2 sm:px-12">
           
           {/* Left Video Card (Prev) */}
           <div
             onClick={goToPrev}
-            className="hidden md:block relative w-[220px] lg:w-[260px] h-[70%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 opacity-40 hover:opacity-75 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
+            className="hidden md:block relative w-[280px] lg:w-[320px] h-[75%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 opacity-40 hover:opacity-75 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
           >
             <SingleVideoPlayer
               video={videos[prevIndex]}
@@ -148,7 +148,7 @@ export const InnerSliderModal = ({
           </div>
 
           {/* Center Active Video Card (Active Playing) */}
-          <div className="relative w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[420px] h-[85vh] max-h-[680px] rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shadow-2xl shadow-rose-500/10 transition-all duration-500 z-20">
+          <div className="relative w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[520px] h-[92vh] rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shadow-2xl shadow-rose-500/10 transition-all duration-500 z-20">
             <SingleVideoPlayer
               key={currentVideo.id}
               video={currentVideo}
@@ -164,7 +164,7 @@ export const InnerSliderModal = ({
           {/* Right Video Card (Next) */}
           <div
             onClick={goToNext}
-            className="hidden md:block relative w-[220px] lg:w-[260px] h-[70%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 opacity-40 hover:opacity-75 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
+            className="hidden md:block relative w-[280px] lg:w-[320px] h-[75%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 opacity-40 hover:opacity-75 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
           >
             <SingleVideoPlayer
               video={videos[nextIndex]}
@@ -575,7 +575,7 @@ const SingleVideoPlayer = ({
 
       {/* Controls Overlay (Only on Active Video) */}
       {isActive && (
-        <div className="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40 pointer-events-none">
+        <div className="absolute inset-0 flex flex-col justify-between p-4 `bg-gradient-to-t` from-slate-950 via-transparent to-slate-950/40 pointer-events-none">
           
           {/* Top Bar Overlay */}
           <div className="flex items-center justify-end pointer-events-auto">
@@ -645,7 +645,7 @@ const SingleVideoPlayer = ({
                 className="relative w-full h-2 bg-slate-800/80 hover:h-2.5 rounded-full cursor-pointer overflow-hidden transition-all group"
               >
                 <div
-                  className="h-full bg-gradient-to-r from-rose-500 to-pink-500 rounded-full transition-all duration-100"
+                  className="h-full `bg-gradient-to-r` from-rose-500 to-pink-500 rounded-full transition-all duration-100"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>

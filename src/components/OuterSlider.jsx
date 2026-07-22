@@ -33,9 +33,9 @@ export const OuterSlider = ({
   const visibleVideos = videos.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <section className="relative my-8 px-4 lg:px-8 max-w-6xl mx-auto w-full flex flex-col items-center justify-center">
+    <section className="relative my-8 px-4 lg:px-8 max-w-[1600px] mx-auto w-full flex flex-col items-center justify-center">
       {/* 4 Videos Grid Container with Sleek Side Navigation */}
-      <div className="relative group my-4 w-full max-w-5xl mx-auto flex items-center justify-center">
+      <div className="relative group my-4 w-full max-w-[1500px] mx-auto flex items-center justify-center">
         {/* Previous Page Floating Button */}
         {totalPages > 1 && (
           <button
@@ -49,7 +49,7 @@ export const OuterSlider = ({
         )}
 
         {/* 4 Videos Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 transition-all duration-300 w-full justify-center items-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 transition-all duration-300 w-full justify-center items-center">
           {visibleVideos.map((video, pageOffset) => {
             const globalIndex = startIndex + pageOffset;
             return (
@@ -194,7 +194,7 @@ const VideoCard = ({
       onClick={onClick}
       className="group cursor-pointer relative transition-all duration-300 hover:-translate-y-1.5 focus:outline-none"
     >
-      <div className="relative aspect-[9/16] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800/80 group-hover:border-slate-600 shadow-xl transition-all duration-300">
+      <div className="relative h-[480px] sm:h-[520px] md:h-[560px] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800/80 group-hover:border-slate-600 shadow-xl transition-all duration-300">
         
         {/* Directly render video, iframe, or gif element */}
         {!hasError ? (
@@ -230,7 +230,7 @@ const VideoCard = ({
         )}
 
         {/* Overlay Dark Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-40 transition-opacity pointer-events-none" />
+        <div className="absolute inset-0 `bg-gradient-to-t` from-slate-950/40 via-transparent to-transparent opacity-40 transition-opacity pointer-events-none" />
 
         {/* Play Icon Center Button */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
