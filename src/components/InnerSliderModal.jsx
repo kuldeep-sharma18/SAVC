@@ -76,7 +76,7 @@ export const InnerSliderModal = ({
   const nextIndex = activeIndex < videos.length - 1 ? activeIndex + 1 : 0;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex flex-col justify-between overflow-hidden animate-fade-in select-none">
+    <div className="fixed inset-0 z-50 bg-slate-950/95 flex flex-col justify-between overflow-hidden animate-fade-in select-none">
       
       {/* Top Header Bar */}
       <div className="relative z-20 flex items-center justify-between p-4 lg:px-8 border-b border-slate-800/60 bg-slate-950/40">
@@ -130,17 +130,17 @@ export const InnerSliderModal = ({
         {/* 3 Videos Carousel Layout Container */}
         <div className="w-full max-w-[1400px] h-full flex items-center justify-center space-x-2 sm:space-x-4 lg:space-x-8 px-2 sm:px-12">
           
-          {/* Left Video Card (Prev) */}
+          {/* Left Video Card (Prev) — full opacity, no hover fade */}
           <div
             onClick={goToPrev}
-            className="hidden md:block relative w-[280px] lg:w-[320px] h-[75%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 opacity-40 hover:opacity-75 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
+            className="hidden md:block relative w-[280px] lg:w-[320px] h-[75%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-700/80 opacity-100 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
           >
             <SingleVideoPlayer
               video={videos[prevIndex]}
               isActive={false}
               isMuted={true}
             />
-            <div className="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+            <div className="absolute inset-0 bg-transparent pointer-events-none flex items-center justify-center">
               <span className="text-xs font-semibold text-slate-300 bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-700">
                 Prev Reel
               </span>
@@ -161,17 +161,17 @@ export const InnerSliderModal = ({
             />
           </div>
 
-          {/* Right Video Card (Next) */}
+          {/* Right Video Card (Next) — full opacity, no hover fade */}
           <div
             onClick={goToNext}
-            className="hidden md:block relative w-[280px] lg:w-[320px] h-[75%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 opacity-40 hover:opacity-75 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
+            className="hidden md:block relative w-[280px] lg:w-[320px] h-[75%] rounded-2xl overflow-hidden bg-slate-900 border border-slate-700/80 opacity-100 transition-all duration-300 transform scale-90 cursor-pointer shadow-xl hover:scale-95"
           >
             <SingleVideoPlayer
               video={videos[nextIndex]}
               isActive={false}
               isMuted={true}
             />
-            <div className="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+            <div className="absolute inset-0 bg-transparent pointer-events-none flex items-center justify-center">
               <span className="text-xs font-semibold text-slate-300 bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-700">
                 Next Reel
               </span>
@@ -532,7 +532,7 @@ const SingleVideoPlayer = ({
           className="absolute inset-0 flex items-center justify-center bg-slate-950/30 z-20 pointer-events-auto cursor-pointer group"
           aria-label="Play video"
         >
-          <div className="w-16 h-16 rounded-full bg-slate-900/80 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl group-hover:scale-110 transition-transform">
+          <div className="w-16 h-16 rounded-full bg-slate-900/80 flex items-center justify-center border border-white/20 shadow-2xl group-hover:scale-110 transition-transform">
             <Play className="w-8 h-8 text-white fill-current ml-1" />
           </div>
         </button>
@@ -540,7 +540,7 @@ const SingleVideoPlayer = ({
 
       {/* Loading Spinner - non-intrusive delayed indicator */}
       {showSpinner && isActive && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-950/20 backdrop-blur-[1px] pointer-events-none z-30 transition-opacity duration-200">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-950/20 pointer-events-none z-30 transition-opacity duration-200">
           <div className="relative w-10 h-10 flex items-center justify-center bg-slate-900/80 p-2 rounded-full shadow-lg border border-slate-700/50">
             <svg
               className="w-6 h-6 animate-spin text-rose-500"
@@ -582,7 +582,7 @@ const SingleVideoPlayer = ({
             {/* Quick Mute Toggle */}
             <button
               onClick={onToggleMute}
-              className="p-2 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/10 text-white hover:bg-slate-900 transition-colors"
+              className="p-2 rounded-full bg-slate-950/60 border border-white/10 text-white hover:bg-slate-900 transition-colors"
             >
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
@@ -595,7 +595,7 @@ const SingleVideoPlayer = ({
             <div className="flex flex-col items-center space-y-1">
               <button
                 onClick={triggerLike}
-                className={`p-3 rounded-full backdrop-blur-md border transition-all duration-300 transform active:scale-75 ${
+                className={`p-3 rounded-full border transition-all duration-300 transform active:scale-75 ${
                   video.userLiked
                     ? 'bg-rose-500 text-white border-rose-400 shadow-lg shadow-rose-500/30'
                     : 'bg-slate-950/60 text-white border-white/10 hover:bg-slate-900'
@@ -612,7 +612,7 @@ const SingleVideoPlayer = ({
             <div className="flex flex-col items-center space-y-1">
               <button
                 onClick={onOpenComments}
-                className="p-3 rounded-full bg-slate-950/60 text-white border border-white/10 hover:bg-slate-900 backdrop-blur-md transition-all active:scale-90"
+                className="p-3 rounded-full bg-slate-950/60 text-white border border-white/10 hover:bg-slate-900 transition-all active:scale-90"
               >
                 <MessageCircle className="w-6 h-6" />
               </button>
@@ -625,7 +625,7 @@ const SingleVideoPlayer = ({
             <div className="flex flex-col items-center space-y-1">
               <button
                 onClick={onOpenShare}
-                className="p-3 rounded-full bg-slate-950/60 text-white border border-white/10 hover:bg-slate-900 backdrop-blur-md transition-all active:scale-90"
+                className="p-3 rounded-full bg-slate-950/60 text-white border border-white/10 hover:bg-slate-900 transition-all active:scale-90"
               >
                 <Share2 className="w-6 h-6" />
               </button>

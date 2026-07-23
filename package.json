@@ -1,9 +1,12 @@
 {
   "name": "savc",
+  "homepage": "https://kuldeep-sharma18.github.io/SAVC/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "node server.js",
     "dev:vite": "vite",
     "build": "vite build",
@@ -28,6 +31,7 @@
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.0",
+    "gh-pages": "^6.3.0",
     "typescript": "~5.8.2"
   }
 }

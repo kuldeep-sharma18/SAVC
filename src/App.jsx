@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { OuterSlider } from './components/OuterSlider';
 import { InnerSliderModal } from './components/InnerSliderModal';
 import { RefreshCw } from 'lucide-react';
+import { INITIAL_VIDEOS } from './data/videosData';
 
 export default function App() {
   const [videos, setVideos] = useState([]);
@@ -16,21 +17,23 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
-  // Fetch videos from backend
+  // Fetch videos from backend, fall back to bundled data if unavailable
   const fetchVideos = async () => {
     setIsLoading(true);
     setError(null);
     try {
       const res = await fetch('/api/videos');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.success && Array.isArray(data.videos)) {
         setVideos(data.videos);
       } else {
-        setError('Failed to load videos catalog');
+        throw new Error('Unexpected response format');
       }
     } catch (err) {
-      console.error('Error fetching videos', err);
-      setError('Could not connect to backend server');
+      // Backend unavailable (e.g. static hosting) — use bundled data
+      console.info('Backend unavailable, using bundled data:', err.message);
+      setVideos(JSON.parse(JSON.stringify(INITIAL_VIDEOS)));
     } finally {
       setIsLoading(false);
     }
@@ -76,6 +79,7 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ videoId }),
       });
+      if (!res.ok) return; // backend unavailable, keep optimistic state
       const data = await res.json();
       if (data.success) {
         setVideos((prev) =>
@@ -86,47 +90,67 @@ export default function App() {
           )
         );
       }
-    } catch (err) {
-      console.error('Like API error', err);
+    } catch {
+      // Backend unavailable — optimistic update already applied, nothing to do
     }
   };
 
   // 2. Add Comment
   const handleAddComment = async (videoId, text) => {
+    // Optimistic local comment so UI feels instant
+    const tempComment = {
+      id: `c-local-${Date.now()}`,
+      author: 'John',
+      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyh9ZR7j2Oi5JHGSIe2mt2cgeVlwQb4mXg3kXIaPgEJQ&s=10',
+      text: text.trim(),
+      timestamp: 'Just now',
+      likes: 0,
+    };
+    setVideos((prev) =>
+      prev.map((v) => {
+        if (v.id !== videoId) return v;
+        const comments = [tempComment, ...v.comments];
+        return { ...v, comments, commentsCount: comments.length };
+      })
+    );
+
     try {
       const res = await fetch('/api/comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ videoId, author: 'John', text }),
       });
+      if (!res.ok) return; // backend unavailable, optimistic comment stays
       const data = await res.json();
       if (data.success) {
+        // Replace temp comment with server comment
         setVideos((prev) =>
           prev.map((v) => {
-            if (v.id === videoId) {
-              return {
-                ...v,
-                comments: [data.comment, ...v.comments],
-                commentsCount: data.commentsCount,
-              };
-            }
-            return v;
+            if (v.id !== videoId) return v;
+            const comments = [data.comment, ...v.comments.filter((c) => c.id !== tempComment.id)];
+            return { ...v, comments, commentsCount: data.commentsCount };
           })
         );
       }
-    } catch (err) {
-      console.error('Comment API error', err);
+    } catch {
+      // Backend unavailable — optimistic comment already shown
     }
   };
 
   // 3. Share Video
   const handleTrackShare = async (videoId, platform) => {
+    // Optimistic shares count increment
+    setVideos((prev) =>
+      prev.map((v) => (v.id === videoId ? { ...v, sharesCount: v.sharesCount + 1 } : v))
+    );
+
     try {
       const res = await fetch('/api/share', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ videoId, platform }),
       });
+      if (!res.ok) return;
       const data = await res.json();
       if (data.success) {
         setVideos((prev) =>
@@ -135,13 +159,13 @@ export default function App() {
           )
         );
       }
-    } catch (err) {
-      console.error('Share API error', err);
+    } catch {
+      // Backend unavailable — optimistic count already applied
     }
   };
 
   // Select video from outer slider or grid
-  const handleSelectVideo = (video, index) => {
+  const handleSelectVideo = (_video, index) => {
     setActiveVideoIndex(index);
     setIsModalOpen(true);
   };
@@ -165,7 +189,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Error State */}
+        {/* Error State - only shown if bundled data also fails */}
         {error && (
           <div className="my-8 mx-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-center text-sm">
             <p>{error}</p>
@@ -173,7 +197,7 @@ export default function App() {
               onClick={fetchVideos}
               className="mt-2 px-4 py-1.5 bg-rose-500 text-white text-xs font-bold rounded-lg"
             >
-              Retry Connection
+              Retry
             </button>
           </div>
         )}
